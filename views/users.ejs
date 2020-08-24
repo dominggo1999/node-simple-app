@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<!-- PERHATIKAN STNTAX EJS NYA -->
+	<%- include ("./partials/head") %>
+</head>
+<body>
+
+	<%- include ("./partials/header") %>
+
+	<% if (users) { -%>
+		<div class="users-container">
+			<div class="users">
+					<% for (let i = 0; i < users.length; i++) { -%>
+						<p>
+						 <%=(users[i].name)%>     ============>     <%=(users[i].age)%>
+						</p>
+					<% } -%>
+			</div>
+		</div>
+	<% } -%>
+
+
+	<%- include ("./partials/foot") %>
+</body>
+</html>

@@ -1,0 +1,13 @@
+.users-container{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	max-width: 1100px;
+	margin: 0 auto;
+	margin-top: 100px;
+
+	.users{
+		display: flex;
+		flex-direction: column;
+	}
+}
