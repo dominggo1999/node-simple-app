@@ -15,7 +15,6 @@ const run = async () =>{
 		const data = await collection.find({}).toArray();
 
 		users = data;
-		console.log(data);
 	}finally {
 		await client.close();
 	}
@@ -23,6 +22,24 @@ const run = async () =>{
 
 // Call DB
 run().catch(console.dir);
+
+// insert data to database
+const insertData = async (data,client,res) =>{
+	try{
+		await client.connect();
+
+		const db = client.db('blog');
+		const collection = db.collection('users');
+
+		await collection.insertOne(data);
+		const newData = await collection.find({}).toArray();
+
+		users = await newData;
+	} finally{
+		res.redirect('/users');
+		await client.close();
+	}
+}
 
 
 // Setting up project
@@ -38,7 +55,7 @@ app.set('view engine', 'ejs');
 
 // Body parser
 // create application/json parser
-let jsonParser = bodyParser.json()
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(sassMiddleware({
     /* Options */
@@ -69,9 +86,14 @@ app.get('/add-user',(req,res)=>{
 })
 
 
-app.post('/send-user',jsonParser,(req,res)=>{
-	console.log(req.body);
-	res.redirect('/users');
+app.post('/send-user',(req,res)=>{
+	const newUser = req.body;
+
+	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+	if(newUser){
+		insertData(newUser,client,res).catch(console.dir);
+	}
 })
 
 
